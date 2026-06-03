@@ -9,19 +9,15 @@ let progresoHistoria = {
 };
 
 function startExperience(){
-    // 1. Inicializar la cámara PRIMERO para asegurar que exista en memoria
     initCamera();
 
-    // 2. Ocultar el intro
     document.getElementById("intro").style.display = "none";
 
-    // 3. Iniciar música con fade
     const music = document.getElementById("bg-music");
     if(music){
         fadeInMusic(music);
     }
 
-    // 4. Ahora sí, moverse a inicio de forma segura
     moveTo("inicio");
 }
 
@@ -50,10 +46,9 @@ function toggleMusic(){
 }
 
 function initCamera(){
-    // Asignamos la variable global
     camera = document.getElementById("camera");
     
-    // Posicionar todos los nodos en sus coordenadas correspondientes
+    // Posiciona cada nodo en su coordenada del mapa de recuerdos
     document.querySelectorAll('.node').forEach(node => {
         const x = node.dataset.x || 0;
         const y = node.dataset.y || 0;
@@ -64,11 +59,10 @@ function initCamera(){
 function moveTo(id){
     const node = document.getElementById(id);
     
-    // Si la cámara no se ha cargado, la buscamos de nuevo por seguridad
     if(!camera) camera = document.getElementById("camera");
     if(!node || !camera) return;
 
-    // Lógica de progreso de la historia
+    // Control de flujo de la historia
     if(id === "inicio"){
         progresoHistoria.origenVisto = true;
     }
@@ -80,11 +74,9 @@ function moveTo(id){
     if(id === "si") respuestasVistas.si = true;
     if(id === "no") respuestasVistas.no = true;
 
-    // Si ya vio ambas respuestas de la llamada
     if(respuestasVistas.si && respuestasVistas.no && !progresoHistoria.llamadasCompletas){
         progresoHistoria.llamadasCompletas = true;
-        // Espera 2 segundos para que el usuario lea la última respuesta antes de regresar al centro
-        setTimeout(() => moveTo("center"), 2000);
+        setTimeout(() => moveTo("center"), 2500); // 2.5 segundos para que pueda leer la última respuesta
     }
 
     if(id === "center" && progresoHistoria.llamadasCompletas){
@@ -95,7 +87,13 @@ function moveTo(id){
         document.getElementById("btn-amistad").style.display = "block";
     }
 
-    // Mover la cámara (fíjate en los signos negativos para simular movimiento de lente)
+    // Actualizar barra de progreso dorada
+    actualizarProgreso();
+
+    // 🎯 FÓRMULA DE CENTRADO PERFECTO:
+    // Invertimos las coordenadas exactas del nodo seleccionado.
+    // Al usar translate con la mitad exacta del ancho y alto del nodo en negativo,
+    // obligamos al navegador a alinear el centro de la tarjeta con el centro de la cámara.
     const x = parseFloat(node.dataset.x) || 0;
     const y = parseFloat(node.dataset.y) || 0;
 
@@ -105,4 +103,18 @@ function moveTo(id){
 function volverCentroDesdeFuerza(){
     progresoHistoria.fuerzaActiva = true;
     moveTo("center");
+}
+
+// Lógica para llenar la barra superior dorada según avance Luci
+function actualizarProgreso() {
+    const progressBarr = document.getElementById("progress");
+    if(!progressBarr) return;
+    
+    let puntos = 0;
+    if(progresoHistoria.origenVisto) puntos += 25;
+    if(respuestasVistas.si || respuestasVistas.no) puntos += 25;
+    if(progresoHistoria.llamadasCompletas) puntos += 25;
+    if(progresoHistoria.fuerzaActiva) puntos += 25;
+    
+    progressBarr.style.width = `${puntos}%`;
 }
