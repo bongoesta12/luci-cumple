@@ -9,22 +9,26 @@ let progresoHistoria = {
 };
 
 function startExperience(){
+    // Inicializar la cámara antes de cualquier movimiento
     initCamera();
 
+    // Ocultar la pantalla de presentación
     document.getElementById("intro").style.display = "none";
 
+    // Iniciar la música de fondo con desvanecimiento suave
     const music = document.getElementById("bg-music");
     if(music){
         fadeInMusic(music);
     }
 
+    // Viajar de forma segura al primer nodo
     moveTo("inicio");
 }
 
 function fadeInMusic(audio){
     audio.volume = 0;
     audio.play().catch(() => {
-        console.log("El navegador bloqueó el audio. Se activará al interactuar.");
+        console.log("El navegador bloqueó el audio automático. Se activará al interactuar.");
     });
 
     let vol = 0;
@@ -48,11 +52,11 @@ function toggleMusic(){
 function initCamera(){
     camera = document.getElementById("camera");
     
-    // Posiciona cada nodo en su coordenada del mapa de recuerdos
+    // Posiciona cada tarjeta usando su tamaño real (-50%) para que sirva en móviles
     document.querySelectorAll('.node').forEach(node => {
         const x = node.dataset.x || 0;
         const y = node.dataset.y || 0;
-        node.style.transform = `translate(${x}px, ${y}px)`;
+        node.style.transform = `translate(calc(${x}px - 50%), calc(${y}px - 50%))`;
     });
 }
 
@@ -62,7 +66,7 @@ function moveTo(id){
     if(!camera) camera = document.getElementById("camera");
     if(!node || !camera) return;
 
-    // Control de flujo de la historia
+    // Lógica para desbloquear el progreso de la historia de Luci
     if(id === "inicio"){
         progresoHistoria.origenVisto = true;
     }
@@ -74,9 +78,11 @@ function moveTo(id){
     if(id === "si") respuestasVistas.si = true;
     if(id === "no") respuestasVistas.no = true;
 
+    // Si ya presionó las dos opciones de la pregunta del millón
     if(respuestasVistas.si && respuestasVistas.no && !progresoHistoria.llamadasCompletas){
         progresoHistoria.llamadasCompletas = true;
-        setTimeout(() => moveTo("center"), 2500); // 2.5 segundos para que pueda leer la última respuesta
+        // Espera 2.5 segundos para que lea el texto antes de regresar al centro
+        setTimeout(() => moveTo("center"), 2500);
     }
 
     if(id === "center" && progresoHistoria.llamadasCompletas){
@@ -87,13 +93,10 @@ function moveTo(id){
         document.getElementById("btn-amistad").style.display = "block";
     }
 
-    // Actualizar barra de progreso dorada
+    // Actualiza la barra superior dorada
     actualizarProgreso();
 
-    // 🎯 FÓRMULA DE CENTRADO PERFECTO:
-    // Invertimos las coordenadas exactas del nodo seleccionado.
-    // Al usar translate con la mitad exacta del ancho y alto del nodo en negativo,
-    // obligamos al navegador a alinear el centro de la tarjeta con el centro de la cámara.
+    // Mueve la cámara hacia el nodo seleccionado (coordenadas inversas)
     const x = parseFloat(node.dataset.x) || 0;
     const y = parseFloat(node.dataset.y) || 0;
 
@@ -105,7 +108,6 @@ function volverCentroDesdeFuerza(){
     moveTo("center");
 }
 
-// Lógica para llenar la barra superior dorada según avance Luci
 function actualizarProgreso() {
     const progressBarr = document.getElementById("progress");
     if(!progressBarr) return;
