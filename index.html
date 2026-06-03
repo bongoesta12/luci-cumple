@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luci ✨ Cine Interactivo</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div id="intro">
+    <div class="fog"></div>
+    <h1>☁️ Iniciando viaje de recuerdos...</h1>
+    <button onclick="startExperience()">Entrar</button>
+</div>
+
+<!-- HUD -->
+<div id="hud">
+    <div id="progress"></div>
+</div>
+
+<div id="viewport">
+<div id="camera">
+
+<!-- CENTRO -->
+<div class="node" id="center" data-x="0" data-y="0">
+    <img src="imagenes/centro.jpg">
+    <h2>Luci ✨</h2>
+    <p>Feliz cumpleaños.<br>Este no es un mapa… es nuestra historia.</p>
+
+    <button onclick="moveTo('inicio')">⬆️ Origen</button>
+
+    <button id="btn-recuerdos" onclick="moveTo('snapchat')" style="display:none;">💬 Recuerdos</button>
+    <button id="btn-fuerza" onclick="moveTo('fuerte')" style="display:none;">💛 Fuerza</button>
+    <button id="btn-amistad" onclick="moveTo('amistad')" style="display:none;">🤝 Amistad</button>
+
+    <!-- BOTÓN MÚSICA -->
+    <button onclick="toggleMusic()">🔊 Música</button>
+</div>
+
+<!-- INICIO -->
+<div class="node" id="inicio" data-x="0" data-y="-800">
+    <img src="imagenes/inicio.jpg">
+    <h2>¿Quién escribió primero?</h2>
+    <p>Es una incógnita.<br>Pero no importa, desde ahí empezó todo.</p>
+    <button onclick="moveTo('center')">⬇ Volver</button>
+</div>
+
+<!-- SNAPCHAT -->
+<div class="node" id="snapchat" data-x="-700" data-y="-300">
+    <img src="imagenes/snapchat.jpg">
+    <h2>Chats infinitos</h2>
+    <p>Hablábamos sin parar, como si el tiempo no existiera.</p>
+    <button onclick="moveTo('ritual')"> Seguir</button>
+</div>
+
+<!-- RITUAL -->
+<div class="node" id="ritual" data-x="-1000" data-y="-500">
+    <h2>Nuestro ritual</h2>
+    <p>
+        Las llamadas ya eran parte de cada noche.<br>
+        Lo único que nos detenía… era quedarnos dormidos.
+    </p>
+    <button onclick="moveTo('dormidos')"> Seguir</button>
+</div>
+
+<!-- DORMIDOS -->
+<div class="node" id="dormidos" data-x="-1400" data-y="-600">
+    <h2>Hasta dormir</h2>
+    <p>
+        Nos quedábamos hablando hasta que el sueño ganaba.<br>
+        Era como si el boton de colgar no existiera.
+    </p>
+    <button onclick="moveTo('llamada')"> Llegar</button>
+</div>
+
+<!-- LLAMADA -->
+<div class="node" id="llamada" data-x="-1700" data-y="0">
+    <h2>pregunta del millon </h2>
+    <p>llamada hoy?</p>
+    <button onclick="moveTo('si')">✔️ Sí</button>
+    <button onclick="moveTo('no')">❌ No</button>
+</div>
+
+<!-- SI -->
+<div class="node" id="si" data-x="-2100" data-y="-300">
+    <h2>Sí</h2>
+    <p>Nos quedábamos hablando hasta dormir.<br>Era paz pura.</p>
+    <button onclick="moveTo('llamada')">↩️ Volver</button>
+</div>
+
+<!-- NO -->
+<div class="node" id="no" data-x="-2100" data-y="300">
+    <h2>No</h2>
+    <p>El silencio se sentía raro… era raro dormir sin escuchar el dia del otro.<br> pero seguíamos ahi.</p>
+    <button onclick="moveTo('llamada')">↩️ Volver</button>
+</div>
+
+<!-- FUERZA -->
+<div class="node" id="fuerte" data-x="700" data-y="400">
+    <img src="imagenes/fuerte.jpg">
+    <h2>Fuerza</h2>
+    <p>
+        A pesar de todo lo que pasó,<br>
+        seguís de pie… y más fuerte que nunca.<br><br>
+        siempre te dije que eras la perzona mas valiente del mundo
+        De verdad admiro eso de vos.
+    </p>
+    <button onclick="volverCentroDesdeFuerza()">↩ Volver</button>
+</div>
+
+<!-- AMISTAD -->
+<div class="node" id="amistad" data-x="1200" data-y="300">
+    <img src="imagenes/amistad.jpg">
+    <h2>algo real</h2>
+    <p>
+        Hubo un tiempo en que dejamos de hablar…<br>
+        cada uno con sus propios problemas.<br><br>
+        me dolia pensar que te aburri<br>
+        me quemaba creer que algo te paso
+        Pero incluso en ese silencio,<br>
+        seguía pensando en vos.
+    </p>
+    <button onclick="moveTo('final')">✨ Final</button>
+</div>
+
+<!-- FINAL -->
+<div class="node" id="final" data-x="1700" data-y="0">
+    <img src="imagenes/final.jpg">
+    <h2>Feliz cumpleaños</h2>
+    <p>Gracias por existir en mi vida, Luci.<br>Este mapa siempre será tuyo ✨.<br> y esta música será nuestro murmullo</p>
+    <button onclick="moveTo('center')">🏠 Volver</button>
+</div>
+
+</div>
+</div>
+
+<!-- 🎵 AUDIO -->
+<audio id="bg-music" loop>
+    <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<script src="script.js"></script>
+</body>
+</html>
