@@ -16,9 +16,10 @@ body {
     align-items: center;
     background: black;
     z-index: 999;
+    padding: 20px;
+    text-align: center;
 }
 
-/* Asegura que el título y el botón queden por encima de la niebla animada */
 #intro h1, #intro button {
     position: relative;
     z-index: 2;
@@ -29,7 +30,7 @@ body {
     inset: 0;
     background: radial-gradient(circle, rgba(255,255,255,0.05), rgba(0,0,0,0.9));
     animation: fogMove 6s infinite alternate;
-    pointer-events: none; /* Hace que los clics del mouse atraviesen la niebla */
+    pointer-events: none;
 }
 
 @keyframes fogMove {
@@ -75,56 +76,57 @@ body {
 /* NODOS (TARJETAS DE HISTORIA) */
 .node {
     position: absolute;
-    width: 260px; /* Ancho optimizado para contener textos y botones sin romperse */
+    width: 250px; /* Tamaño ideal para pantallas móviles de todo tipo */
     background: #111827;
-    padding: 16px;
+    padding: 14px;
     border-radius: 16px;
     text-align: center;
     box-shadow: 0 0 30px rgba(0,0,0,0.6);
-    
-    /* 🎯 CENTRADO DINÁMICO RESPECTO A LA CÁMARA 🎯 */
-    transform-origin: center center;
     left: 0;
     top: 0;
-    margin-left: -130px; /* Centra horizontalmente (Mitad del width: 260px / 2) */
-    margin-top: -140px;  /* Centra verticalmente compensando el contenido aproximado */
+    /* El truco del -50% hace que el centro real de la tarjeta coincida con su coordenada X e Y */
+    /* El JavaScript se encargará de posicionar las coordenadas sumando este centrado */
 }
 
 .node h2 {
-    font-size: 20px;
-    margin: 10px 0 5px 0;
+    font-size: 18px;
+    margin: 8px 0 4px 0;
 }
 
 .node p {
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.4;
-    margin: 5px 0 12px 0;
+    margin: 4px 0 10px 0;
 }
 
 .node img {
     width: 100%;
+    max-height: 160px; /* Evita que las imágenes estiren demasiado la tarjeta en móviles */
+    object-fit: cover;
     border-radius: 12px;
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 /* BOTONES DEL MAPA */
 button {
-    margin-top: 8px;
-    padding: 10px 16px;
+    margin-top: 6px;
+    padding: 10px 14px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 13px;
+    width: 100%; /* En móviles es mucho más cómodo tocar botones que ocupen todo el ancho */
+    box-sizing: border-box;
     transition: background 0.2s ease, transform 0.1s ease;
 }
 
 button:hover {
     background: #e0e0e0;
-    transform: scale(1.03);
 }
 
-button:active {
-    transform: scale(0.97);
+/* Evita que los botones múltiples (como Sí y No) se encimen verticalmente de forma fea */
+.node button + button {
+    margin-top: 8px;
 }
